@@ -10,7 +10,14 @@
 
 进入 `admin-dashboard` 后先检查 `git branch --show-current` 和 `git status --short`。实际开发主线为 `codex/develop`（由 `codex/vite-tanstack` 重命名），应用基线提交为 `da2b354`；已有未提交工作时先核对其归属，再切换分支。任务分支和同步分支从开发主线创建，完成后合回开发主线。
 
-目前应用分支只存在于本地，尚未推送。交接本地仓库时应包含 `codex/develop` 及其历史；未来经授权推送后，接收方需要显式获取并检出该分支，不能沿用远程默认 `main`。分支用途也记录在 `upstream-sync.json`。
+接收方应显式克隆开发分支，不能沿用远程默认 `main`。分支用途也记录在 `upstream-sync.json`：
+
+```sh
+git clone --branch codex/develop https://github.com/ReturnMars/next-shadcn-admin-dashboard.git admin-dashboard
+cd admin-dashboard
+```
+
+已有克隆先执行 `git fetch origin`，核对未提交工作后切换到 `codex/develop`；它跟踪 `origin/codex/develop`，而 `origin/main` 仍是原版更新来源。
 
 使用 Node.js 22.12+ 或更新的受支持版本，npm安装：
 

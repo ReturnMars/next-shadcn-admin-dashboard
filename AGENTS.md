@@ -7,7 +7,7 @@
 - 本地 `main` / `origin/main` 是原版 Next.js 更新来源，不是本项目的开发或交付分支，不在其上编写应用功能。
 - 先运行 `git branch --show-current` 与 `git status --short`。日常开发在 `codex/develop`，任务分支和 `codex/sync-upstream-*` 均从它创建、最终合回它。
 - 基线提交为 `da2b354`。在其他分支工作前确认它继承了该应用基线及所需后续开发；不能仅凭分支名、远程默认分支或 `main` 判断代码版本。
-- 发现分支不对时，先保护并核对已有工作，不执行 reset、强制切换或整份覆盖。应用分支目前仅在本地；交接必须包含该分支，直接克隆远程默认 `main` 得到的是原版 Next.js。
+- 发现分支不对时，先保护并核对已有工作，不执行 reset、强制切换或整份覆盖。交接时显式克隆或检出 `codex/develop`，其远程跟踪分支是 `origin/codex/develop`；直接克隆远程默认 `main` 得到的是原版 Next.js。
 - 机器可读的分支用途见 `upstream-sync.json`：`developmentBranch` 是应用开发主线，`sourceBranch` 是源更新分支。两者不可互换。
 
 ## 项目约定

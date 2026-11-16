@@ -8,7 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const configSchema = z.strictObject({
   repository: z.string().min(1),
   remote: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/),
-  branch: z.string().min(1),
+  sourceBranch: z.string().min(1),
+  developmentBranch: z.string().min(1),
   reviewedCommit: z.string().regex(/^[0-9a-f]{40}$/),
 });
 
@@ -72,15 +73,16 @@ export function checkUpstream(cwd) {
       maxBuffer: 20 * 1024 * 1024,
     });
 
-  git("check-ref-format", `refs/heads/${config.branch}`);
+  git("check-ref-format", `refs/heads/${config.sourceBranch}`);
+  git("check-ref-format", `refs/heads/${config.developmentBranch}`);
   const remoteUrl = git("remote", "get-url", config.remote).trim();
   if (remoteUrl !== config.repository) {
     throw new Error(`远程地址与 upstream-sync.json 不一致：${remoteUrl}。请先确认同步来源。`);
   }
   git("cat-file", "-e", `${config.reviewedCommit}^{commit}`);
-  const trackingRef = `refs/remotes/${config.remote}/${config.branch}`;
+  const trackingRef = `refs/remotes/${config.remote}/${config.sourceBranch}`;
   // Refresh the remote-tracking cache only; the ancestry check below rejects rewritten source history.
-  git("fetch", "--no-tags", config.remote, `+refs/heads/${config.branch}:${trackingRef}`);
+  git("fetch", "--no-tags", config.remote, `+refs/heads/${config.sourceBranch}:${trackingRef}`);
   const target = git("rev-parse", "--verify", `${trackingRef}^{commit}`).trim();
   const ancestry = spawnSync("git", ["merge-base", "--is-ancestor", config.reviewedCommit, target], {
     cwd,
@@ -91,7 +93,9 @@ export function checkUpstream(cwd) {
   if (ancestry.status !== 0) throw new Error(ancestry.stderr || "无法核对源分支历史。");
 
   return {
-    source: `${config.remote}/${config.branch}`,
+    source: `${config.remote}/${config.sourceBranch}`,
+    developmentBranch: config.developmentBranch,
+    currentBranch: git("branch", "--show-current").trim() || null,
     base: config.reviewedCommit,
     target,
     dirty: git("status", "--porcelain").length > 0,
@@ -104,10 +108,11 @@ export function checkUpstream(cwd) {
 function main() {
   const cwd = fileURLToPath(new URL("../", import.meta.url));
   const report = checkUpstream(cwd);
-  console.log(`来源：${report.source}\n已审阅：${report.base}\n本次目标：${report.target}`);
+  console.log(`实际开发主线：${report.developmentBranch}\n当前分支：${report.currentBranch ?? "分离 HEAD"}`);
+  console.log(`原版更新来源：${report.source}（不是开发主线）\n已审阅：${report.base}\n本次目标：${report.target}`);
   console.log(`待审阅 ${report.commits} 个提交，${report.changes.length} 个文件变更。`);
   if (report.history) console.log(`\n源提交：\n${report.history}`);
-  if (report.dirty) console.log("当前工作区有未提交改动；检查未修改业务文件。首次移植前先固化本地基线。");
+  if (report.dirty) console.log("当前工作区有未提交改动；检查未修改业务文件。移植前先整理并提交本地工作。");
   for (const change of report.changes) {
     const mapping = mapSourcePath(change.path);
     console.log(`\n${change.status} ${change.oldPath ? `${change.oldPath} -> ` : ""}${change.path}`);

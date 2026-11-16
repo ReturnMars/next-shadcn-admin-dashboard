@@ -1,10 +1,16 @@
 # Studio Admin · Vite + TanStack Router
 
+> **实际开发主线：`codex/develop`。** `main` / `origin/main` 保留原版 Next.js，仅用于接收源更新。接手项目或启动 AI 编码前，先确认分支；直接克隆远程默认 `main` 不会得到本项目的 Vite 版本。
+
 从 [ReturnMars/next-shadcn-admin-dashboard](https://github.com/ReturnMars/next-shadcn-admin-dashboard) 迁移的管理后台模板，保留 Studio Admin 的页面、shadcn/ui组件、主题和布局。**不依赖 Next.js，也不需要Node应用服务器。** 上游作者 Arham Khan，MIT 许可保留。
 
 技术栈：React、TypeScript、Vite、TanStack Router、TanStack Table、Tailwind CSS v4、shadcn/ui（radix-nova）、Zustand、React Hook Form、Zod。
 
 ## Getting started
+
+进入 `admin-dashboard` 后先检查 `git branch --show-current` 和 `git status --short`。实际开发主线为 `codex/develop`（由 `codex/vite-tanstack` 重命名），应用基线提交为 `da2b354`；已有未提交工作时先核对其归属，再切换分支。任务分支和同步分支从开发主线创建，完成后合回开发主线。
+
+目前应用分支只存在于本地，尚未推送。交接本地仓库时应包含 `codex/develop` 及其历史；未来经授权推送后，接收方需要显式获取并检出该分支，不能沿用远程默认 `main`。分支用途也记录在 `upstream-sync.json`。
 
 使用 Node.js 22.12+ 或更新的受支持版本，npm安装：
 
@@ -53,7 +59,7 @@ npm run upstream:check # 获取 fork 的新增提交、文件差异和迁移目�
 
 组件命令使用本项目锁定的 CLI：`npx --no-install shadcn <命令>`。其依赖包含已验证的本地安全补丁，详情见[补丁说明](vendor/deepmerge/README.md)；升级 CLI 时同时检查补丁是否仍需保留。`npm test`会一并运行依赖安全与兼容回归，也可单独执行`npm run test:dependencies`。
 
-后续更新从 `origin/main`（ReturnMars fork）获取，Vite 版本在独立应用分支维护。`upstream-sync.json` 记录已完整审阅的源提交；先运行 `npm run upstream:check`，再在隔离分支按目录映射适配需要的改动，不在应用分支直接 `git pull origin main`。具体分支、基线推进和验收步骤见[同步 fork 更新](docs/migration.md#持续同步-fork-更新)。
+后续更新从 `origin/main`（ReturnMars fork）获取，Vite 版本在 `codex/develop` 维护。`upstream-sync.json` 分别记录 `developmentBranch`、`sourceBranch` 和已完整审阅的源提交；先运行 `npm run upstream:check`，再从 `codex/develop` 建立隔离分支，按目录映射适配需要的改动，不在开发主线直接 `git pull origin main`。具体分支、基线推进和验收步骤见[同步 fork 更新](docs/migration.md#持续同步-fork-更新)。
 
 ## 静态部署
 

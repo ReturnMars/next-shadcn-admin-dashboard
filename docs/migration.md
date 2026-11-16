@@ -109,20 +109,30 @@ TanStack官方建议Vite路由插件在React插件之前，并可开启自动拆
 
 ### 分支与来源
 
-- `origin` 保持指向 `ReturnMars/next-shadcn-admin-dashboard`，其 `main` 接收原版更新；Vite 版本当前位于 `codex/vite-tanstack`。以后发布应用分支时也保留这一区分，不把 Vite 版本推到原版 `main`。
+**实际开发主线固定为 `codex/develop`**，原 `codex/vite-tanstack` 已重命名。接手的人和 AI 开始修改前，先检查 `git branch --show-current` 与 `git status --short`。
+
+| 分支 | 用途 | 开发与合入方向 |
+| --- | --- | --- |
+| `codex/develop` | 长期维护的 Vite 应用开发主线 | 日常开发；接收任务分支和同步适配结果 |
+| 从 `codex/develop` 创建的 `codex/<任务名>` | 独立开发任务 | 完成后合回 `codex/develop` |
+| `codex/sync-upstream-<目标短 SHA>` | 隔离处理源更新 | 从 `codex/develop` 创建，适配和验证后合回它 |
+| 本地 `main` / `origin/main` | 原版 Next.js 源更新 | 仅跟踪和比较源代码，不用于 Vite 应用开发 |
+
+- `origin` 保持指向 `ReturnMars/next-shadcn-admin-dashboard`，其 `main` 接收原版更新；Vite 版本在 `codex/develop`。以后发布应用分支时也保留这一区分，不把 Vite 版本推到原版 `main`。
 - GitHub 已核实该仓库 fork 自 `arhamkhnz/next-shadcn-admin-dashboard`。本项目同步 ReturnMars fork；如需作者仓库的新功能，先将其更新同步到 fork，再从同一来源适配，避免混用两套源历史。
-- `upstream-sync.json` 的 `reviewedCommit` 是**已逐项审阅完成的源提交**，不是本地应用提交。初始为 `3d1d6f4abf4231b258c81da25da1ccbc38d9b954`。2026-11-16 检查时 fork 的 `main` 仍为该提交，没有待同步更新。
-- 应用基线包含 Vite/TanStack 迁移、依赖安全修复、按页面用途区分的全宽布局，以及同步检查工具。后续从 `codex/vite-tanstack` 的应用提交建立同步工作树，不从原版 `3d1d6f4` 建立；同步前仍须确认本地新工作已提交。提交、推送遵循 AGENTS.md 的用户授权约定。
+- `upstream-sync.json` 明确区分 `developmentBranch: codex/develop` 和 `sourceBranch: main`。`reviewedCommit` 是**已逐项审阅完成的源提交**，不是本地应用提交。初始为 `3d1d6f4abf4231b258c81da25da1ccbc38d9b954`。2026-11-16 检查时 fork 的 `main` 仍为该提交，没有待同步更新。
+- 应用基线 `da2b354` 包含 Vite/TanStack 迁移、依赖安全修复、按页面用途区分的全宽布局，以及同步检查工具。后续从 `codex/develop` 的最新应用提交建立同步工作树，不从原版 `3d1d6f4` 建立；同步前仍须确认本地新工作已提交。提交、推送遵循 AGENTS.md 的用户授权约定。
+- 当前应用分支只在本地。交接本地仓库时必须包含 `codex/develop`；未来获授权推送后，接收者需要显式检出该分支。远程默认 `main` 仍是原版，不能把默认克隆结果当成当前应用。本轮重命名不改远程默认分支，也不推送。
 
 ### 每次同步
 
 1. 在应用项目运行 `npm run upstream:check`。命令校验来源，fetch 指定分支，并报告 `reviewedCommit..目标提交` 的完整差异和旧新路径映射。它只刷新 Git 远程跟踪信息，不改 HEAD、暂存区、业务文件或同步基线。来源地址不符、网络失败、基线缺失或源历史改写时明确失败，不拿缓存结果冒充最新状态。
-2. 如果没有新增提交，本轮结束。有更新时，先确认应用基线已提交，再从应用分支建立 `codex/sync-upstream-<目标短 SHA>` 分支及独立 worktree。使用已报告的固定目标 SHA；适配途中来源又更新时，留待下一轮处理。`git worktree add -b <同步分支> <独立目录> codex/vite-tanstack` 可让同步工作不影响日常开发目录。
+2. 如果没有新增提交，本轮结束。有更新时，先确认应用基线已提交，再从 `codex/develop` 建立 `codex/sync-upstream-<目标短 SHA>` 分支及独立 worktree。使用已报告的固定目标 SHA；适配途中来源又更新时，留待下一轮处理。`git worktree add -b <同步分支> <独立目录> codex/develop` 可让同步工作不影响日常开发目录。
 3. 对比源提交区间，逐项移植需要的改动。共享组件可参考原 diff；被搬迁的页面按脚本提示找到 `src/features` 下的对应位置。路径提示不代表补丁可直接应用，重命名和删除也要检查本地引用。新增页面必须同时接入 TanStack 路由；不要把未接入路由的原版文件当成已完成新功能。
 4. 框架入口、Next 配置、Server Actions、字体及图片加载按 Vite 架构重新适配；`package.json` 和锁文件逐项核对，不整份替换，保留仍必要的安全补丁。主题、筛选、分页、拖拽等行为与本地布局规则同时保留。
 5. 在同步分支运行 `npm ci`、`npm run build`、`npm test`、`npm run check`、`git diff --check`，并验证受影响的交互与 390px / 1920px / 2560px 布局。已有警告要与基线区分；新增依赖变更再运行 `npm audit` 并评估实际影响。
 6. 在本节末追加本轮记录：源起止 SHA、已移植内容、不适用内容及理由、验证结果。**只有整个源提交区间都已处理完**，才将 `reviewedCommit` 改为本轮固定目标，并与代码一起提交。若只挑选了部分功能，先记录已移植源提交，基线暂不推进，避免漏掉尚未审阅的更新。
-7. 审阅同步分支的最终 diff，再合回应用分支；仅在能够快进时使用 `git merge --ff-only <同步分支>`。若应用分支期间有新提交，先解决与本地新工作的冲突并重验。发布时推送应用分支，不覆盖 fork 的原版 `main`。
+7. 审阅同步分支的最终 diff，再合回 `codex/develop`；先确认当前工作区干净并位于 `codex/develop`，仅在能够快进时使用 `git merge --ff-only <同步分支>`。若开发主线期间有新提交，先解决与本地新工作的冲突并重验。发布时推送 `codex/develop`，不覆盖 fork 的原版 `main`。
 
 不使用 `merge -s ours` 伪造已同步记录，也不通过自动选择全部 ours/theirs 掩盖差异。这个流程保留源历史和明确的审阅游标，允许持续接收更新，但框架分歧意味着无法承诺无人工适配的一键同步。
 

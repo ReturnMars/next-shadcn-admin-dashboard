@@ -31,7 +31,14 @@ function fixture(t) {
   write(source, "src/components/old.tsx", "export const name = 'old';\n");
   const base = commit("source baseline");
   git(directory, "clone", "--no-hardlinks", source, local);
-  const config = { repository: source, remote: "origin", branch: "main", reviewedCommit: base };
+  git(local, "switch", "-c", "codex/develop");
+  const config = {
+    repository: source,
+    remote: "origin",
+    sourceBranch: "main",
+    developmentBranch: "codex/develop",
+    reviewedCommit: base,
+  };
   write(local, "upstream-sync.json", JSON.stringify(config));
   return { directory, source, local, base, config, git, write, commit };
 }
@@ -70,6 +77,9 @@ test("fetches new changes while preserving dirty files, the index, HEAD and the 
   const target = commit("rename component and update Next config");
   const report = checkUpstream(local);
   assert.equal(report.base, base);
+  assert.equal(report.developmentBranch, "codex/develop");
+  assert.equal(report.currentBranch, "codex/develop");
+  assert.equal(report.source, "origin/main");
   assert.equal(report.target, target);
   assert.equal(report.commits, 1);
   assert.match(report.history, /rename component and update Next config/);

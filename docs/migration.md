@@ -109,11 +109,11 @@ TanStack官方建议Vite路由插件在React插件之前，并可开启自动拆
 
 ### 分支与来源
 
-**实际开发主线固定为 `codex/develop`**，原 `codex/vite-tanstack` 已重命名。接手的人和 AI 开始修改前，先检查 `git branch --show-current` 与 `git status --short`。
+**实际开发主线及 GitHub 默认分支固定为 `codex/develop`**，原 `codex/vite-tanstack` 已重命名。接手的人和 AI 开始修改前，先检查 `git branch --show-current` 与 `git status --short`。
 
 | 分支 | 用途 | 开发与合入方向 |
 | --- | --- | --- |
-| `codex/develop` | 长期维护的 Vite 应用开发主线 | 日常开发；接收任务分支和同步适配结果 |
+| `codex/develop` | GitHub 默认分支，长期维护的 Vite 应用开发主线 | 日常开发；接收任务分支和同步适配结果 |
 | 从 `codex/develop` 创建的 `codex/<任务名>` | 独立开发任务 | 完成后合回 `codex/develop` |
 | `codex/sync-upstream-<目标短 SHA>` | 隔离处理源更新 | 从 `codex/develop` 创建，适配和验证后合回它 |
 | 本地 `main` / `origin/main` | 原版 Next.js 源更新 | 仅跟踪和比较源代码，不用于 Vite 应用开发 |
@@ -122,7 +122,7 @@ TanStack官方建议Vite路由插件在React插件之前，并可开启自动拆
 - GitHub 已核实该仓库 fork 自 `arhamkhnz/next-shadcn-admin-dashboard`。本项目同步 ReturnMars fork；如需作者仓库的新功能，先将其更新同步到 fork，再从同一来源适配，避免混用两套源历史。
 - `upstream-sync.json` 明确区分 `developmentBranch: codex/develop` 和 `sourceBranch: main`。`reviewedCommit` 是**已逐项审阅完成的源提交**，不是本地应用提交。初始为 `3d1d6f4abf4231b258c81da25da1ccbc38d9b954`。2026-11-16 检查时 fork 的 `main` 仍为该提交，没有待同步更新。
 - 应用基线 `da2b354` 包含 Vite/TanStack 迁移、依赖安全修复、按页面用途区分的全宽布局，以及同步检查工具。后续从 `codex/develop` 的最新应用提交建立同步工作树，不从原版 `3d1d6f4` 建立；同步前仍须确认本地新工作已提交。提交、推送遵循 AGENTS.md 的用户授权约定。
-- 应用分支的远程对应为 `origin/codex/develop`。交接本地仓库时必须包含 `codex/develop`；从远程接收时使用 README 中带 `--branch codex/develop` 的克隆命令。远程默认 `main` 仍是原版，不能把默认克隆结果当成当前应用。推送开发分支不覆盖源 `main`，也不改变远程默认分支。
+- 应用分支的远程对应为 `origin/codex/develop`。GitHub 默认分支已改为 `codex/develop`，普通克隆会得到 Vite 应用；交接时也可使用 README 中显式带 `--branch codex/develop` 的命令。原版 `main` 继续保留，源更新始终显式取自 `origin/main`，不能改用远程 HEAD 判断同步来源。旧克隆的工作分支不会随远程默认分支自动切换，接手时仍需检查。
 
 ### 每次同步
 

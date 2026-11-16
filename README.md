@@ -1,6 +1,6 @@
 # Studio Admin · Vite + TanStack Router
 
-> **实际开发主线：`codex/develop`。** `main` / `origin/main` 保留原版 Next.js，仅用于接收源更新。接手项目或启动 AI 编码前，先确认分支；直接克隆远程默认 `main` 不会得到本项目的 Vite 版本。
+> **实际开发主线及 GitHub 默认分支：`codex/develop`。** 普通克隆会检出当前 Vite 应用。`main` / `origin/main` 保留原版 Next.js，仅用于接收源更新；接手项目或启动 AI 编码前仍需确认当前分支。
 
 从 [ReturnMars/next-shadcn-admin-dashboard](https://github.com/ReturnMars/next-shadcn-admin-dashboard) 迁移的管理后台模板，保留 Studio Admin 的页面、shadcn/ui组件、主题和布局。**不依赖 Next.js，也不需要Node应用服务器。** 上游作者 Arham Khan，MIT 许可保留。
 
@@ -10,7 +10,7 @@
 
 进入 `admin-dashboard` 后先检查 `git branch --show-current` 和 `git status --short`。实际开发主线为 `codex/develop`（由 `codex/vite-tanstack` 重命名），应用基线提交为 `da2b354`；已有未提交工作时先核对其归属，再切换分支。任务分支和同步分支从开发主线创建，完成后合回开发主线。
 
-接收方应显式克隆开发分支，不能沿用远程默认 `main`。分支用途也记录在 `upstream-sync.json`：
+GitHub 默认分支已设为 `codex/develop`。交接时仍可显式指定开发分支，让用途一目了然；分支用途也记录在 `upstream-sync.json`：
 
 ```sh
 git clone --branch codex/develop https://github.com/ReturnMars/next-shadcn-admin-dashboard.git admin-dashboard

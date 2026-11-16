@@ -1,6 +1,6 @@
 # Contributing
 
-**实际开发主线为 `codex/develop`，跟踪 `origin/codex/develop`。** `main` / `origin/main` 仅保存原版 Next.js 更新，不在其上开发本项目。开始前检查当前分支和未提交改动；任务分支及同步分支从 `codex/develop` 创建，完成后合回它。交接或克隆时必须显式检出开发分支，命令见 README。
+**实际开发主线及 GitHub 默认分支为 `codex/develop`，跟踪 `origin/codex/develop`。** `main` / `origin/main` 仅保存原版 Next.js 更新，不在其上开发本项目。开始前检查当前分支和未提交改动；任务分支及同步分支从 `codex/develop` 创建，完成后合回它。普通克隆默认检出开发分支，旧克隆仍需检查并切换，命令见 README。
 
 保留上游MIT许可与作者信息。本分支使用Vite和TanStack Router，开始前请阅读README.md、AGENTS.md和docs/migration.md。
 

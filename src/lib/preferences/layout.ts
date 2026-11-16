@@ -15,14 +15,6 @@ const SIDEBAR_COLLAPSIBLE_OPTIONS = [
 export const SIDEBAR_COLLAPSIBLE_VALUES = SIDEBAR_COLLAPSIBLE_OPTIONS.map((v) => v.value);
 export type SidebarCollapsible = (typeof SIDEBAR_COLLAPSIBLE_VALUES)[number];
 
-// Content Layout
-const CONTENT_LAYOUT_OPTIONS = [
-  { label: "Centered", value: "centered" },
-  { label: "Full Width", value: "full-width" },
-] as const;
-export const CONTENT_LAYOUT_VALUES = CONTENT_LAYOUT_OPTIONS.map((v) => v.value);
-export type ContentLayout = (typeof CONTENT_LAYOUT_VALUES)[number];
-
 // Navbar Style
 const NAVBAR_STYLE_OPTIONS = [
   { label: "Sticky", value: "sticky" },

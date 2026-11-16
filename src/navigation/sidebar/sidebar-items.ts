@@ -1,3 +1,7 @@
+import type { FileRoutesByTo } from "@/routeTree.gen";
+
+export type NavigationPath = keyof FileRoutesByTo;
+
 import {
   Banknote,
   Bitcoin,
@@ -36,7 +40,7 @@ export type NavBadge = "new" | "updated" | "soon";
 export interface NavSubItem {
   id: string;
   title: string;
-  url: string;
+  url: NavigationPath;
   icon?: LucideIcon;
   badge?: NavBadge;
   disabled?: boolean;
@@ -53,7 +57,7 @@ interface NavItemBase {
 }
 
 export interface NavMainLinkItem extends NavItemBase {
-  url: string;
+  url: NavigationPath;
   subItems?: never;
 }
 

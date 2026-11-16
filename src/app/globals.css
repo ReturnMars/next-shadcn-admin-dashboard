@@ -9,6 +9,43 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Opt in per table; keep sorting, selection and row actions owned by each feature. */
+@utility table-compact {
+  border-collapse: separate;
+  border-spacing: 0;
+
+  & :is(th, td) {
+    padding: --spacing(2) --spacing(4);
+    border-right: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+  }
+
+  & th {
+    height: --spacing(10);
+    padding-block: 0;
+    border-top: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+    background: var(--background);
+    color: var(--muted-foreground);
+    font-weight: 400;
+  }
+
+  & tbody tr:not(:has([colspan])) {
+    height: --spacing(12);
+  }
+
+  & :is(th, td):last-child {
+    border-right: 0;
+  }
+
+  & tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  & :is(th, td):has([role="checkbox"]) {
+    padding-inline: --spacing(4);
+  }
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

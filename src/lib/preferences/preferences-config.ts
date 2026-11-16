@@ -1,29 +1,9 @@
-/**
- * How each preference should be saved.
- *
- * "client-cookie"  → write cookie on the browser only.
- * "server-cookie"  → write cookie through a Server Action.
- * "localStorage"   → save only on the client (non-layout stuff).
- * "none"           → no saving, resets on reload.
- *
- * Layout-critical prefs (sidebar_variant / sidebar_collapsible)
- * must stay consistent during SSR → so they can’t use localStorage.
- * Others are flexible and can use any persistence.
- */
-
 import { fontKeys } from "@/lib/fonts/registry";
 
-import {
-  CONTENT_LAYOUT_VALUES,
-  NAVBAR_STYLE_VALUES,
-  SIDEBAR_COLLAPSIBLE_VALUES,
-  SIDEBAR_VARIANT_VALUES,
-} from "./layout";
+import { NAVBAR_STYLE_VALUES, SIDEBAR_COLLAPSIBLE_VALUES, SIDEBAR_VARIANT_VALUES } from "./layout";
 import { THEME_MODE_VALUES, THEME_PRESET_VALUES } from "./theme";
 
-export type PreferencePersistence = "none" | "client-cookie" | "server-cookie" | "localStorage";
-
-type LayoutPersistence = Exclude<PreferencePersistence, "localStorage">;
+export type PreferencePersistence = "none" | "client-cookie" | "localStorage";
 
 type PreferenceDefinition<
   Values extends readonly string[],
@@ -39,14 +19,6 @@ type PreferenceDefinition<
 function definePreference<
   const Values extends readonly string[],
   const Persistence extends PreferencePersistence,
-  const Attribute extends `data-${string}`,
->(definition: PreferenceDefinition<Values, Persistence, Attribute>) {
-  return definition;
-}
-
-function defineSSRPreference<
-  const Values extends readonly string[],
-  const Persistence extends LayoutPersistence,
   const Attribute extends `data-${string}`,
 >(definition: PreferenceDefinition<Values, Persistence, Attribute>) {
   return definition;
@@ -74,13 +46,6 @@ export const PREFERENCE_REGISTRY = {
     attribute: "data-font",
   }),
 
-  content_layout: definePreference({
-    values: CONTENT_LAYOUT_VALUES,
-    defaultValue: "centered",
-    persistence: "client-cookie",
-    attribute: "data-content-layout",
-  }),
-
   navbar_style: definePreference({
     values: NAVBAR_STYLE_VALUES,
     defaultValue: "sticky",
@@ -88,14 +53,14 @@ export const PREFERENCE_REGISTRY = {
     attribute: "data-navbar-style",
   }),
 
-  sidebar_variant: defineSSRPreference({
+  sidebar_variant: definePreference({
     values: SIDEBAR_VARIANT_VALUES,
     defaultValue: "sidebar",
     persistence: "client-cookie",
     attribute: "data-sidebar-variant",
   }),
 
-  sidebar_collapsible: defineSSRPreference({
+  sidebar_collapsible: definePreference({
     values: SIDEBAR_COLLAPSIBLE_VALUES,
     defaultValue: "icon",
     persistence: "client-cookie",

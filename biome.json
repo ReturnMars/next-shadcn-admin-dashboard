@@ -16,7 +16,6 @@
               "react",
               "react/**",
               ":BLANK_LINE:",
-              "next/**",
               ":BLANK_LINE:",
               ":PACKAGE:",
               ":BLANK_LINE:",
@@ -41,7 +40,13 @@
       "!dist",
       "!out",
       "!src/components/ui",
-      "!src/components/calendar"
+      "!src/components/calendar",
+      "!src/routeTree.gen.ts",
+      "!package-lock.json",
+      "!src/features/dashboard/logistics/_components/map-data",
+      "!.agents",
+      "!vendor/deepmerge/index.cjs",
+      "!vendor/deepmerge/index.d.ts"
     ]
   },
   "formatter": {
@@ -72,9 +77,7 @@
         "noFloatingPromises": "error",
         "noMisusedPromises": "error"
       },
-      "performance": {
-        "noImgElement": "warn"
-      },
+      "performance": {},
       "style": {
         "noCommonJs": "error",
         "noHeadElement": "warn",
@@ -100,7 +103,6 @@
       }
     },
     "domains": {
-      "next": "recommended",
       "react": "recommended"
     }
   },

@@ -1,0 +1,53 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/noto-sans";
+@import "@fontsource-variable/roboto";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/nunito-sans";
+@import "@fontsource-variable/figtree";
+@import "@fontsource-variable/raleway";
+@import "@fontsource-variable/public-sans";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/noto-serif";
+@import "@fontsource-variable/roboto-slab";
+@import "@fontsource-variable/merriweather";
+@import "@fontsource-variable/lora";
+@import "@fontsource-variable/playfair-display";
+
+@font-face {
+  font-family: "Geist Pixel Square";
+  src: url("/fonts/geist-pixel-square.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Serif";
+  src: url("/fonts/geist-serif.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  --font-inter: "Inter Variable";
+  --font-noto-sans: "Noto Sans Variable";
+  --font-roboto: "Roboto Variable";
+  --font-geist: "Geist Variable";
+  --font-outfit: "Outfit Variable";
+  --font-geist-mono: "Geist Mono Variable";
+  --font-dm-sans: "DM Sans Variable";
+  --font-nunito-sans: "Nunito Sans Variable";
+  --font-figtree: "Figtree Variable";
+  --font-raleway: "Raleway Variable";
+  --font-public-sans: "Public Sans Variable";
+  --font-jetbrains-mono: "JetBrains Mono Variable";
+  --font-noto-serif: "Noto Serif Variable";
+  --font-roboto-slab: "Roboto Slab Variable";
+  --font-merriweather: "Merriweather Variable";
+  --font-lora: "Lora Variable";
+  --font-playfair-display: "Playfair Display Variable";
+  --font-geist-pixel-square: "Geist Pixel Square";
+  --font-geist-serif: "Geist Serif";
+}

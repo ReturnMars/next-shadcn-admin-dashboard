@@ -35,3 +35,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Vite / local validation
+/dist/
+/.tanstack/
+/test-results/
+/playwright-report/
+/docs/screenshots/
